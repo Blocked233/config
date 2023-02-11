@@ -2,12 +2,21 @@ proxy-groups:
   - name: "PROXY"
     type: load-balance
     proxies:
-      - hk
-      - jp
-      - us
+      - jp1
+      - jp2
+      - jp3
     url: 'http://www.gstatic.com/generate_204'
     interval: 1000
     strategy: round-robin
+
+  - name: "auto"
+    type: load-balance
+    proxies:
+      - hk
+      - us
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 1000
+
 
 proxies:
   
@@ -22,7 +31,7 @@ proxies:
     grpc-opts:
       grpc-service-name: "Message"
 
-  - name: jp
+  - name: jp1
     server: hello.orangeflower-02e57fda.japaneast.azurecontainerapps.io
     port: 443
     type: trojan
@@ -32,7 +41,29 @@ proxies:
     sni: hello.orangeflower-02e57fda.japaneast.azurecontainerapps.io
     grpc-opts:
       grpc-service-name: "Message"
-  
+
+  - name: jp2
+    server: hello2.orangeflower-02e57fda.japaneast.azurecontainerapps.io
+    port: 443
+    type: trojan
+    password: "1234"
+    udp: true
+    network: grpc
+    sni: hello2.orangeflower-02e57fda.japaneast.azurecontainerapps.io
+    grpc-opts:
+      grpc-service-name: "Message"
+
+  - name: jp3
+    server: hello3.orangeflower-02e57fda.japaneast.azurecontainerapps.io
+    port: 443
+    type: trojan
+    password: "1234"
+    udp: true
+    network: grpc
+    sni: hello3.orangeflower-02e57fda.japaneast.azurecontainerapps.io
+    grpc-opts:
+      grpc-service-name: "Message"
+
   - name: us
     server: graphs.eu.org
     port: 443
@@ -158,13 +189,16 @@ rules:
   - RULE-SET,apple,DIRECT
   - RULE-SET,google,DIRECT
   - RULE-SET,proxy,PROXY
+  - RULE-SET,proxy,fallback
   - RULE-SET,direct,DIRECT
   - RULE-SET,lancidr,DIRECT
   - RULE-SET,cncidr,DIRECT
   - RULE-SET,telegramcidr,PROXY
+  - RULE-SET,telegramcidr,fallback
   - GEOIP,LAN,DIRECT
   - GEOIP,CN,DIRECT
   - MATCH,PROXY
+  - MATCH,fallback
 
 dns:
   enable: true
