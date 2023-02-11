@@ -9,7 +9,7 @@ proxy-groups:
     interval: 1000
     strategy: round-robin
 
-  - name: "auto"
+  - name: "fallback"
     type: load-balance
     proxies:
       - hk
