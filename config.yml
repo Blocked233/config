@@ -1,26 +1,39 @@
 proxy-groups:
+
   - name: "PROXY"
+    type: load-balance
+    proxies:
+      - jp
+      - hk
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 1000
+
+  - name: "jp"
     type: load-balance
     proxies:
       - jp1
       - jp2
       - jp3
+      - jp4
     url: 'http://www.gstatic.com/generate_204'
     interval: 1000
     strategy: round-robin
 
-  - name: "fallback"
+  - name: "hk"
     type: load-balance
     proxies:
-      - hk
-      - us
+      - hk0
+      - hk1
+      - hk2
+      - hk3
+      - hk4
     url: 'http://www.gstatic.com/generate_204'
     interval: 1000
+    strategy: round-robin
 
 
 proxies:
-  
-  - name: hk
+  - name: hk0
     server: webservice.eastasia.cloudapp.azure.com
     port: 443
     type: trojan
@@ -28,6 +41,50 @@ proxies:
     udp: true
     network: grpc
     sni: webservice.eastasia.cloudapp.azure.com
+    grpc-opts:
+      grpc-service-name: "Message" 
+
+  - name: hk1
+    server: hk1.fastcloud.eu.org
+    port: 443
+    type: trojan
+    password: "1234"
+    udp: true
+    network: grpc
+    sni: hk1.fastcloud.eu.org
+    grpc-opts:
+      grpc-service-name: "Message"
+
+  - name: hk2
+    server: hk2.fastcloud.eu.org
+    port: 443
+    type: trojan
+    password: "1234"
+    udp: true
+    network: grpc
+    sni: hk2.fastcloud.eu.org
+    grpc-opts:
+      grpc-service-name: "Message"        
+
+  - name: hk3
+    server: hk3.fastcloud.eu.org
+    port: 443
+    type: trojan
+    password: "1234"
+    udp: true
+    network: grpc
+    sni: hk3.fastcloud.eu.org
+    grpc-opts:
+      grpc-service-name: "Message"
+
+  - name: hk4
+    server: hk4.fastcloud.eu.org
+    port: 443
+    type: trojan
+    password: "1234"
+    udp: true
+    network: grpc
+    sni: hk4.fastcloud.eu.org
     grpc-opts:
       grpc-service-name: "Message"
 
@@ -61,6 +118,17 @@ proxies:
     udp: true
     network: grpc
     sni: hello3.orangeflower-02e57fda.japaneast.azurecontainerapps.io
+    grpc-opts:
+      grpc-service-name: "Message"
+
+  - name: jp4
+    server: hello4.orangeflower-02e57fda.japaneast.azurecontainerapps.io
+    port: 443
+    type: trojan
+    password: "1234"
+    udp: true
+    network: grpc
+    sni: hello4.orangeflower-02e57fda.japaneast.azurecontainerapps.io
     grpc-opts:
       grpc-service-name: "Message"
 
@@ -180,6 +248,7 @@ rules:
   - DOMAIN-SUFFIX,azure.com,DIRECT
   - DOMAIN-SUFFIX,azurecontainerapps.io,DIRECT
   - DOMAIN-SUFFIX,bing.com,DIRECT
+  - DOMAIN-SUFFIX,fastcloud.eu.org,DIRECT  
   - DOMAIN-SUFFIX,bing.net,DIRECT
   - DOMAIN-SUFFIX,msedge.net,DIRECT
   - RULE-SET,applications,DIRECT
@@ -189,16 +258,13 @@ rules:
   - RULE-SET,apple,DIRECT
   - RULE-SET,google,DIRECT
   - RULE-SET,proxy,PROXY
-  - RULE-SET,proxy,fallback
   - RULE-SET,direct,DIRECT
   - RULE-SET,lancidr,DIRECT
   - RULE-SET,cncidr,DIRECT
   - RULE-SET,telegramcidr,PROXY
-  - RULE-SET,telegramcidr,fallback
   - GEOIP,LAN,DIRECT
   - GEOIP,CN,DIRECT
   - MATCH,PROXY
-  - MATCH,fallback
 
 dns:
   enable: true
