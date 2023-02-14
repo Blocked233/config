@@ -5,6 +5,7 @@ proxy-groups:
     proxies:
       - jp
       - hk
+      - kr
     url: 'http://www.gstatic.com/generate_204'
     interval: 1000
 
@@ -22,7 +23,6 @@ proxy-groups:
   - name: "hk"
     type: load-balance
     proxies:
-      - hk0
       - hk1
       - hk2
       - hk3
@@ -31,18 +31,18 @@ proxy-groups:
     interval: 1000
     strategy: round-robin
 
+  - name: "kr"
+    type: load-balance
+    proxies:
+      - kr1
+      - kr2
+      - kr3
+      - kr4
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 1000
+    strategy: round-robin
 
 proxies:
-  - name: hk0
-    server: webservice.eastasia.cloudapp.azure.com
-    port: 443
-    type: trojan
-    password: "1234"
-    udp: true
-    network: grpc
-    sni: webservice.eastasia.cloudapp.azure.com
-    grpc-opts:
-      grpc-service-name: "Message" 
 
   - name: hk1
     server: hk1.fastcloud.eu.org
@@ -132,17 +132,49 @@ proxies:
     grpc-opts:
       grpc-service-name: "Message"
 
-  - name: us
-    server: graphs.eu.org
+  - name: kr1
+    server: kr1.fastcloud.eu.org
     port: 443
     type: trojan
     password: "1234"
     udp: true
     network: grpc
-    sni: graphs.eu.org
+    sni: kr1.fastcloud.eu.org
     grpc-opts:
       grpc-service-name: "Message"
 
+  - name: kr2
+    server: kr2.fastcloud.eu.org
+    port: 443
+    type: trojan
+    password: "1234"
+    udp: true
+    network: grpc
+    sni: kr2.fastcloud.eu.org
+    grpc-opts:
+      grpc-service-name: "Message"
+
+  - name: kr3
+    server: kr3.fastcloud.eu.org
+    port: 443
+    type: trojan
+    password: "1234"
+    udp: true
+    network: grpc
+    sni: kr3.fastcloud.eu.org
+    grpc-opts:
+      grpc-service-name: "Message"
+
+  - name: kr4
+    server: kr4.fastcloud.eu.org
+    port: 443
+    type: trojan
+    password: "1234"
+    udp: true
+    network: grpc
+    sni: kr4.fastcloud.eu.org
+    grpc-opts:
+      grpc-service-name: "Message"
 
 
 rule-providers:
@@ -245,12 +277,15 @@ rule-providers:
     interval: 86400
 
 rules:
-  - DOMAIN-SUFFIX,azure.com,DIRECT
+  - DOMAIN-KEYWORD,azure,DIRECT
+  - DOMAIN-KEYWORD,microsoft,DIRECT
+  - DOMAIN-KEYWORD,bing,DIRECT
+  - DOMAIN-KEYWORD,msedge,DIRECT
+  - DOMAIN-KEYWORD,windows,DIRECT
+  - DOMAIN-KEYWORD,fastcloud,DIRECT  
+
   - DOMAIN-SUFFIX,azurecontainerapps.io,DIRECT
-  - DOMAIN-SUFFIX,bing.com,DIRECT
-  - DOMAIN-SUFFIX,fastcloud.eu.org,DIRECT  
-  - DOMAIN-SUFFIX,bing.net,DIRECT
-  - DOMAIN-SUFFIX,msedge.net,DIRECT
+
   - RULE-SET,applications,DIRECT
   - RULE-SET,private,DIRECT
   - RULE-SET,reject,REJECT
@@ -264,7 +299,7 @@ rules:
   - RULE-SET,telegramcidr,PROXY
   - GEOIP,LAN,DIRECT
   - GEOIP,CN,DIRECT
-  - MATCH,PROXY
+  - MATCH,DIRECT
 
 dns:
   enable: true
