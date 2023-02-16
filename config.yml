@@ -3,11 +3,11 @@ proxy-groups:
   - name: "PROXY"
     type: url-test
     proxies:
-      - kr
+      - hk1
       - jp
-      - hk
+      - hk2
     url: 'http://www.gstatic.com/generate_204'
-    interval: 1000
+    interval: 10000
 
   - name: "jp"
     type: load-balance
@@ -20,73 +20,14 @@ proxy-groups:
     interval: 1000
     strategy: round-robin
 
-  - name: "hk"
-    type: load-balance
-    proxies:
-      - hk1
-      - hk2
-      - hk3
-      - hk4
-    url: 'http://www.gstatic.com/generate_204'
-    interval: 1000
-    strategy: round-robin
-
-  - name: "kr"
-    type: load-balance
-    proxies:
-      - kr1
-      - kr2
-      - kr3
-      - kr4
-    url: 'http://www.gstatic.com/generate_204'
-    interval: 1000
-    strategy: round-robin
-
 proxies:
 
   - name: hk1
-    server: hk1.fastcloud.eu.org
+    server: webservice.eastasia.cloudapp.azure.com
     port: 443
     type: trojan
     password: "1234"
     udp: true
-    network: grpc
-    sni: hk1.fastcloud.eu.org
-    grpc-opts:
-      grpc-service-name: "Message"
-
-  - name: hk2
-    server: hk2.fastcloud.eu.org
-    port: 443
-    type: trojan
-    password: "1234"
-    udp: true
-    network: grpc
-    sni: hk2.fastcloud.eu.org
-    grpc-opts:
-      grpc-service-name: "Message"        
-
-  - name: hk3
-    server: hk3.fastcloud.eu.org
-    port: 443
-    type: trojan
-    password: "1234"
-    udp: true
-    network: grpc
-    sni: hk3.fastcloud.eu.org
-    grpc-opts:
-      grpc-service-name: "Message"
-
-  - name: hk4
-    server: hk4.fastcloud.eu.org
-    port: 443
-    type: trojan
-    password: "1234"
-    udp: true
-    network: grpc
-    sni: hk4.fastcloud.eu.org
-    grpc-opts:
-      grpc-service-name: "Message"
 
   - name: jp1
     server: hello.orangeflower-02e57fda.japaneast.azurecontainerapps.io
@@ -132,49 +73,13 @@ proxies:
     grpc-opts:
       grpc-service-name: "Message"
 
-  - name: kr1
-    server: kr1.fastcloud.eu.org
+  - name: hk2
+    server: substrate.eastasia.cloudapp.azure.com
     port: 443
     type: trojan
     password: "1234"
+    sni: substrate.eastasia.cloudapp.azure.com
     udp: true
-    network: grpc
-    sni: kr1.fastcloud.eu.org
-    grpc-opts:
-      grpc-service-name: "Message"
-
-  - name: kr2
-    server: kr2.fastcloud.eu.org
-    port: 443
-    type: trojan
-    password: "1234"
-    udp: true
-    network: grpc
-    sni: kr2.fastcloud.eu.org
-    grpc-opts:
-      grpc-service-name: "Message"
-
-  - name: kr3
-    server: kr3.fastcloud.eu.org
-    port: 443
-    type: trojan
-    password: "1234"
-    udp: true
-    network: grpc
-    sni: kr3.fastcloud.eu.org
-    grpc-opts:
-      grpc-service-name: "Message"
-
-  - name: kr4
-    server: kr4.fastcloud.eu.org
-    port: 443
-    type: trojan
-    password: "1234"
-    udp: true
-    network: grpc
-    sni: kr4.fastcloud.eu.org
-    grpc-opts:
-      grpc-service-name: "Message"
 
 
 rule-providers:
