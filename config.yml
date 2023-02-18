@@ -1,11 +1,10 @@
 proxy-groups:
 
   - name: "PROXY"
-    type: url-test
+    type: load-balance
     proxies:
-      - hk1
+      - hk
       - jp
-      - hk2
     url: 'http://www.gstatic.com/generate_204'
     interval: 10000
 
@@ -20,11 +19,30 @@ proxy-groups:
     interval: 1000
     strategy: round-robin
 
+  - name: "hk"
+    type: load-balance
+    proxies:
+      - hk1
+      - hk2
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 1000
+    strategy: round-robin   
+
 proxies:
 
   - name: hk1
     server: webservice.eastasia.cloudapp.azure.com
     port: 443
+    type: trojan
+    password: "1234"
+    udp: true    
+    network: grpc
+    grpc-opts:
+      grpc-service-name: "Message"
+
+  - name: hk2
+    server: webservice.eastasia.cloudapp.azure.com
+    port: 80
     type: trojan
     password: "1234"
     udp: true
@@ -36,7 +54,6 @@ proxies:
     password: "1234"
     udp: true
     network: grpc
-    sni: hello.orangeflower-02e57fda.japaneast.azurecontainerapps.io
     grpc-opts:
       grpc-service-name: "Message"
 
@@ -47,7 +64,6 @@ proxies:
     password: "1234"
     udp: true
     network: grpc
-    sni: hello2.orangeflower-02e57fda.japaneast.azurecontainerapps.io
     grpc-opts:
       grpc-service-name: "Message"
 
@@ -58,7 +74,6 @@ proxies:
     password: "1234"
     udp: true
     network: grpc
-    sni: hello3.orangeflower-02e57fda.japaneast.azurecontainerapps.io
     grpc-opts:
       grpc-service-name: "Message"
 
@@ -69,18 +84,8 @@ proxies:
     password: "1234"
     udp: true
     network: grpc
-    sni: hello4.orangeflower-02e57fda.japaneast.azurecontainerapps.io
     grpc-opts:
       grpc-service-name: "Message"
-
-  - name: hk2
-    server: substrate.eastasia.cloudapp.azure.com
-    port: 443
-    type: trojan
-    password: "1234"
-    sni: substrate.eastasia.cloudapp.azure.com
-    udp: true
-
 
 rule-providers:
   reject:
