@@ -1,32 +1,47 @@
 proxy-groups:
 
   - name: "PROXY"
-    type: load-balance
+    type: fallback
     proxies:
-      - hk
+      - hk 
       - jp
+      - us
     url: 'http://www.gstatic.com/generate_204'
-    interval: 10000
-
+    interval: 1000
+    lazy: true
+    
   - name: "jp"
     type: load-balance
     proxies:
       - jp1
       - jp2
       - jp3
-      - jp4
     url: 'http://www.gstatic.com/generate_204'
     interval: 1000
     strategy: round-robin
+    lazy: true
 
   - name: "hk"
     type: load-balance
     proxies:
       - hk1
       - hk2
+      - hk3
     url: 'http://www.gstatic.com/generate_204'
     interval: 1000
     strategy: round-robin   
+    lazy: true
+
+  - name: "us"
+    type: load-balance
+    proxies:
+      - us1
+      - us2
+      - us3
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 1000
+    strategy: round-robin 
+    lazy: true  
 
 proxies:
 
@@ -42,10 +57,23 @@ proxies:
 
   - name: hk2
     server: webservice.eastasia.cloudapp.azure.com
-    port: 80
+    port: 443
     type: trojan
     password: "1234"
-    udp: true
+    udp: true    
+    network: grpc
+    grpc-opts:
+      grpc-service-name: "Message"
+
+  - name: hk3
+    server: webservice.eastasia.cloudapp.azure.com
+    port: 443
+    type: trojan
+    password: "1234"
+    udp: true    
+    network: grpc
+    grpc-opts:
+      grpc-service-name: "Message"
 
   - name: jp1
     server: hello.orangeflower-02e57fda.japaneast.azurecontainerapps.io
@@ -54,21 +82,34 @@ proxies:
     password: "1234"
     udp: true
     network: grpc
+    sni: hello.orangeflower-02e57fda.japaneast.azurecontainerapps.io
     grpc-opts:
       grpc-service-name: "Message"
 
   - name: jp2
-    server: hello2.orangeflower-02e57fda.japaneast.azurecontainerapps.io
+    server: hello.orangeflower-02e57fda.japaneast.azurecontainerapps.io
     port: 443
     type: trojan
     password: "1234"
     udp: true
     network: grpc
+    sni: hello.orangeflower-02e57fda.japaneast.azurecontainerapps.io
     grpc-opts:
       grpc-service-name: "Message"
 
   - name: jp3
-    server: hello3.orangeflower-02e57fda.japaneast.azurecontainerapps.io
+    server: hello.orangeflower-02e57fda.japaneast.azurecontainerapps.io
+    port: 443
+    type: trojan
+    password: "1234"
+    udp: true
+    network: grpc
+    sni: hello.orangeflower-02e57fda.japaneast.azurecontainerapps.io
+    grpc-opts:
+      grpc-service-name: "Message"
+
+  - name: us1
+    server: graphs.eu.org
     port: 443
     type: trojan
     password: "1234"
@@ -77,8 +118,18 @@ proxies:
     grpc-opts:
       grpc-service-name: "Message"
 
-  - name: jp4
-    server: hello4.orangeflower-02e57fda.japaneast.azurecontainerapps.io
+  - name: us2
+    server: graphs.eu.org
+    port: 443
+    type: trojan
+    password: "1234"
+    udp: true
+    network: grpc
+    grpc-opts:
+      grpc-service-name: "Message"
+
+  - name: us3
+    server: graphs.eu.org
     port: 443
     type: trojan
     password: "1234"
