@@ -4,18 +4,18 @@ proxy-groups:
     type: fallback
     proxies:
       - hk 
-      - jp
+      - hkk
       - us
     url: 'http://www.gstatic.com/generate_204'
     interval: 1000
     lazy: true
     
-  - name: "jp"
+  - name: "hkk"
     type: load-balance
     proxies:
-      - jp1
-      - jp2
-      - jp3
+      - hkk1
+      - hkk2
+      - hkk3
     url: 'http://www.gstatic.com/generate_204'
     interval: 1000
     strategy: round-robin
@@ -75,36 +75,33 @@ proxies:
     grpc-opts:
       grpc-service-name: "Message"
 
-  - name: jp1
-    server: hello.orangeflower-02e57fda.japaneast.azurecontainerapps.io
+  - name: hkk1
+    server: hello--5lcve0o.jollysmoke-a973a818.eastasia.azurecontainerapps.io
     port: 443
     type: trojan
     password: "1234"
     udp: true
     network: grpc
-    sni: hello.orangeflower-02e57fda.japaneast.azurecontainerapps.io
     grpc-opts:
       grpc-service-name: "Message"
 
-  - name: jp2
-    server: hello.orangeflower-02e57fda.japaneast.azurecontainerapps.io
+  - name: hkk2
+    server: hello--5lcve0o.jollysmoke-a973a818.eastasia.azurecontainerapps.io
     port: 443
     type: trojan
     password: "1234"
     udp: true
     network: grpc
-    sni: hello.orangeflower-02e57fda.japaneast.azurecontainerapps.io
     grpc-opts:
       grpc-service-name: "Message"
 
-  - name: jp3
-    server: hello.orangeflower-02e57fda.japaneast.azurecontainerapps.io
+  - name: hkk3
+    server: hello--5lcve0o.jollysmoke-a973a818.eastasia.azurecontainerapps.io
     port: 443
     type: trojan
     password: "1234"
     udp: true
     network: grpc
-    sni: hello.orangeflower-02e57fda.japaneast.azurecontainerapps.io
     grpc-opts:
       grpc-service-name: "Message"
 
