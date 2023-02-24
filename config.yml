@@ -1,3 +1,5 @@
+mode: rule
+
 proxy-groups:
 
   - name: "PROXY"
@@ -76,7 +78,7 @@ proxies:
       grpc-service-name: "Message"
 
   - name: hkk1
-    server: hello--5lcve0o.jollysmoke-a973a818.eastasia.azurecontainerapps.io
+    server: hello.icyhill-519ea5be.eastasia.azurecontainerapps.io
     port: 443
     type: trojan
     password: "1234"
@@ -86,7 +88,7 @@ proxies:
       grpc-service-name: "Message"
 
   - name: hkk2
-    server: hello--5lcve0o.jollysmoke-a973a818.eastasia.azurecontainerapps.io
+    server: hello.icyhill-519ea5be.eastasia.azurecontainerapps.io
     port: 443
     type: trojan
     password: "1234"
@@ -96,7 +98,7 @@ proxies:
       grpc-service-name: "Message"
 
   - name: hkk3
-    server: hello--5lcve0o.jollysmoke-a973a818.eastasia.azurecontainerapps.io
+    server: hello.icyhill-519ea5be.eastasia.azurecontainerapps.io
     port: 443
     type: trojan
     password: "1234"
@@ -240,7 +242,6 @@ rules:
   - DOMAIN-KEYWORD,bing,DIRECT
   - DOMAIN-KEYWORD,msedge,DIRECT
   - DOMAIN-KEYWORD,windows,DIRECT
-  - DOMAIN-KEYWORD,fastcloud,DIRECT  
 
   - DOMAIN-SUFFIX,azurecontainerapps.io,DIRECT
 
@@ -263,9 +264,7 @@ dns:
   enable: true
   enhanced-mode: fake-ip
   nameserver:
-    - 223.5.5.5
-  fallback:
-    - 1.1.1.1
+    - https://223.5.5.5/dns-query
   fake-ip-filter:
     - +.stun.*.*
     - +.stun.*.*.*
