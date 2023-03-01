@@ -6,18 +6,30 @@ proxy-groups:
     type: fallback
     proxies:
       - hk 
-      - hkk
+      - kr
       - us
+      - jp
     url: 'http://www.gstatic.com/generate_204'
     interval: 1000
     lazy: true
     
-  - name: "hkk"
+  - name: "kr"
     type: load-balance
     proxies:
-      - hkk1
-      - hkk2
-      - hkk3
+      - kr1
+      - kr2
+      - kr3
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 1000
+    strategy: round-robin
+    lazy: true
+
+  - name: "jp"
+    type: load-balance
+    proxies:
+      - jp1
+      - jp2
+      - jp3
     url: 'http://www.gstatic.com/generate_204'
     interval: 1000
     strategy: round-robin
@@ -77,8 +89,8 @@ proxies:
     grpc-opts:
       grpc-service-name: "Message"
 
-  - name: hkk1
-    server: hello.icyhill-519ea5be.eastasia.azurecontainerapps.io
+  - name: kr1
+    server: user.koreacentral.cloudapp.azure.com
     port: 443
     type: trojan
     password: "1234"
@@ -87,8 +99,8 @@ proxies:
     grpc-opts:
       grpc-service-name: "Message"
 
-  - name: hkk2
-    server: hello.icyhill-519ea5be.eastasia.azurecontainerapps.io
+  - name: kr2
+    server: user.koreacentral.cloudapp.azure.com
     port: 443
     type: trojan
     password: "1234"
@@ -97,8 +109,8 @@ proxies:
     grpc-opts:
       grpc-service-name: "Message"
 
-  - name: hkk3
-    server: hello.icyhill-519ea5be.eastasia.azurecontainerapps.io
+  - name: kr3
+    server: user.koreacentral.cloudapp.azure.com
     port: 443
     type: trojan
     password: "1234"
@@ -129,6 +141,36 @@ proxies:
 
   - name: us3
     server: graphs.eu.org
+    port: 443
+    type: trojan
+    password: "1234"
+    udp: true
+    network: grpc
+    grpc-opts:
+      grpc-service-name: "Message"
+
+  - name: jp1
+    server: hello.icyground-ed0e423d.japaneast.azurecontainerapps.io
+    port: 443
+    type: trojan
+    password: "1234"
+    udp: true
+    network: grpc
+    grpc-opts:
+      grpc-service-name: "Message"
+
+  - name: jp2
+    server: hello.icyground-ed0e423d.japaneast.azurecontainerapps.io
+    port: 443
+    type: trojan
+    password: "1234"
+    udp: true
+    network: grpc
+    grpc-opts:
+      grpc-service-name: "Message"
+
+  - name: jp3
+    server: hello.icyground-ed0e423d.japaneast.azurecontainerapps.io
     port: 443
     type: trojan
     password: "1234"
@@ -237,6 +279,7 @@ rule-providers:
     interval: 86400
 
 rules:
+  - DOMAIN-KEYWORD,openai,us
   - DOMAIN-KEYWORD,azure,DIRECT
   - DOMAIN-KEYWORD,microsoft,DIRECT
   - DOMAIN-KEYWORD,bing,DIRECT
